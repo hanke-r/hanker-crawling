@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<h2>Web crawler</h2>
+<span class="web-crawling"></span>
+
+<script>
+	$(function(){
+		$.ajax({
+			url : "/crawling",
+			type : "GET",
+			dataType : "json",
+			success : function (rs) {
+				console.log(rs);
+                var html = "";
+                html = rs.images;
+
+                $(".web-crawling").append(html);
+            }
+		});
+	});
+</script>
+
+</body>
+</html>
