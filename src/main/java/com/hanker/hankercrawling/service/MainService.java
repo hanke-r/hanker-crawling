@@ -8,10 +8,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 @Service
 public class MainService {
@@ -23,14 +25,20 @@ public class MainService {
     // 파일명 갱신
     private static int FILE_NUM = 0;
 
+
     public String webCrawling() {
 
         try{
-            Connection conn = Jsoup.connect(CRAWLING_URL);
+            // 크롤링할 URL 주소
+            String URL = "URL주소";
+
+            Connection conn = Jsoup.connect(URL);
 
             Document html = conn.get();
             // 수집할 Class 명
-            Elements imageUrlElements = html.getElementsByTag("img");
+            Elements imageUrlElements = html.getElementsByClass("thumbnail");
+
+
 
             return imageUrlElements.toString();
         } catch(IOException ie){
@@ -39,6 +47,7 @@ public class MainService {
             return "error";
         }
     }
+
 
     public void imgDownload() {
 
@@ -97,4 +106,5 @@ public class MainService {
             e.printStackTrace();
         }
     }
+
 }
