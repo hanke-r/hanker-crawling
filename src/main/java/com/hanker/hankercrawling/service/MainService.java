@@ -6,6 +6,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -16,12 +18,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 @Service
+@PropertySource("classpath:path.properties")
 public class MainService {
 
     // 크롤링할 URL 주소
-    private static final String CRAWLING_URL = "";
+    @Value("${CRAWLING_URL}")
+    private String CRAWLING_URL;
+
     // 다운로드 받을 Dir 주소
-    private static final String DIR = "D:\\1.download";
+    @Value("${CRAWLING_IMG_DOWNLOAD_DIR}")
+    private String DIR;
+
     // 파일명 갱신
     private static int FILE_NUM = 0;
 
@@ -29,16 +36,12 @@ public class MainService {
     public String webCrawling() {
 
         try{
-            // 크롤링할 URL 주소
-            String URL = "URL주소";
 
-            Connection conn = Jsoup.connect(URL);
+            Connection conn = Jsoup.connect(CRAWLING_URL);
 
             Document html = conn.get();
             // 수집할 Class 명
-            Elements imageUrlElements = html.getElementsByClass("thumbnail");
-
-
+            Elements imageUrlElements = html.getElementsByTag("img");
 
             return imageUrlElements.toString();
         } catch(IOException ie){
@@ -89,7 +92,7 @@ public class MainService {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             InputStream is = connection.getInputStream();
 
-            System.out.println("fileName = " + fileName);
+            System.out.println("fileName = " + fileName[1]);
 
             File file = new File(dir + "/" + FILE_NUM + "_"+ fileName[1]);
             FILE_NUM++;
